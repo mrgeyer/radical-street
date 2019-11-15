@@ -1,4 +1,14 @@
 <style>
-/* paste CSS here */
+#radical, .selected, .notSelected {
+    font-size: 32px;
+}
+
+.selected {
+  color: red;
+}
+
+.notSelected {
+  color: black;
+}
 
 </style>
