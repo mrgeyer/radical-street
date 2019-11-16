@@ -1,18 +1,32 @@
 <style>
 #radical, .selected, .notSelected {
-    font-size: 32px;
+    font-size: 15px;
+    font-family: monospace;
 }
 
 .selected {
   color: red;
+  border: 5px solid red;
+  background-color: white;
+  height: 50px;
 }
+    
 
 .notSelected {
+  background-color: white;
   color: black;
+  border: 5px solid #EEEEEE;
+  height: 50px;
 }
 
 #gameArea, #buttons, #radical {
   padding: 5px;
 }
 
+table {
+  padding: 0px;
+  margin: 0px
+  border-spacing: 0px 0px;
+  vertical-align: top;
+}
 </style>
