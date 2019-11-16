@@ -4,9 +4,10 @@ const fourRoot = "∜";
 outsideProduct = [];
 radicalIndex = 2;
 insideProduct = [];
-mode = "math";
+mode = "monsters";
 level = 1;
 selectMode = 0;
+const largestMonster = 12;
 levelSelectArea = document.getElementById("levelSelect");
 gameArea = document.getElementById("gameArea");
 
@@ -16,8 +17,74 @@ function randomNumber(lowerBound, upperBound){
   return randomNum;
 }
 
+function monsterfy(location,index) {
+  document.getElementById("textBox").innerHTML = "";
+  let newProduct = 1;
+  let factors = [];
+  let objectToSplice = index;
+  if (location === 1) {
+        newProduct = insideProduct[index].number;
+       insideProduct.splice(objectToSplice,1);
+  } else   if (location === 0) {
+        newProduct = outsideProduct[index].number;
+        outsideProduct.splice(objectToSplice,1);
+  }
+    let n = largestMonster;
+    while (newProduct > largestMonster) {
+      while(newProduct%n === 0) {
+        newProduct = newProduct / n;
+        factors.push(n);
+      } 
+      n--;
+    }
+    factors.push(newProduct);
+  if (location === 1) {
+   for(let i = 0; i < factors.length; i++) {
+        let numberObject = {
+          number: factors[i],
+          selected: false,
+          location: 1
+        };
+       if (numberObject.number > 1) {
+        insideProduct.push(numberObject);
+       }
+     }
+  } else   if (location === 0) {  
+   for(let i = 0; i < factors.length; i++) {
+        let numberObject = {
+          number: factors[i],
+          selected: false,
+          location: 0
+        };
+       if (numberObject.number > 1) {
+        outsideProduct.push(numberObject);
+       }
+     }
+  } 
+  return factors;
+}
+
+function massMonsterfy() {
+  for (let i = 0; i < outsideProduct.length; i++) {
+    if (outsideProduct[i].number > largestMonster) {
+      monsterfy(0,i);
+    }
+  }
+    for (let i = 0; i < insideProduct.length; i++) {
+    if (insideProduct[i].number > largestMonster) {
+      monsterfy(1,i);
+    }
+  }
+}
+
 function displayRadical() {
-    let radicalText = "";
+    let radicalText = "<table><tr>";
+    let houseImageName = "radical";
+    if (mode === "monsters") {
+      houseImageName = "House";
+      massMonsterfy();
+    }
+    
     function displayProducts(productArray) {
       let outputText = "";
       for (let i = 0; i < productArray.length; i++) {
@@ -31,34 +98,67 @@ function displayRadical() {
         outputText += productArray[i].location + ', ' + i + ')"';
         outputText += "> ";
         if (mode === "math"){
-          outputText += productArray[i].number;
+          outputText += '(' + productArray[i].number + ')';
         } else {
           // image for productArray[i].number goes here
-          outputText +='<img src="';
+          outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+       
           outputText += productArray[i].number;
-          outputText += '">';
+          outputText += '.png" width="27">';
         }
         outputText += " </button> ";       
   }
       return outputText;
     }
+    radicalText += "<td>";
+    radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+    radicalText += 'outsideSpacer';
+    radicalText += '.png" width="64" height="65">';
+  
     radicalText += displayProducts(outsideProduct);
-    switch(radicalIndex) {
-        case 2:
-          radicalText += sqrt;
-          break;
-        case 3:
-          radicalText += cubeRoot;
-          break;
-        case 4:
-          radicalText += fourRoot;
-          break;
-        default:
-          radicalText += sqrt;
+    radicalText += "</td>";
+  
+    radicalText += "<td>";
+
+  radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+  radicalText += houseImageName + radicalIndex + 'a';
+  radicalText += '.png" width="70"><br>';
+/*
+  radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+  radicalText += houseImageName + radicalIndex + 'ab';
+  radicalText += '.png" width="76"><br>'; 
+
+  radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+  radicalText += houseImageName + 2 + 'ac';
+  radicalText += '.png" width="76">';    
+  */
+    radicalText += "</td>";
+  
+    radicalText += "<td>";
+    for(let i = 0; i < insideProduct.length; i++) {
+        radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+        radicalText += houseImageName + '2ba';
+        radicalText += '.png" width="64">';
     }
+    radicalText += "<br>";
+  
     radicalText += displayProducts(insideProduct);
-  document.getElementById("radical").innerHTML = radicalText;
+    radicalText += "<br>";
+  
+
+      for(let i = 0; i < insideProduct.length; i++) {
+        radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+        radicalText += houseImageName + '2bc';
+        radicalText += '.png" width="64">';
+      }
+    radicalText += "</td>";
+  
+    radicalText += "</tr></table>";
+    document.getElementById("radical").innerHTML = radicalText;
 }
+
+
+
 
 function loadLevel(lvl){
   level = lvl;
@@ -66,9 +166,12 @@ function loadLevel(lvl){
   levelSelectArea.style.display = "none";  
   let radicalOutput = "";
   let numberOfOutsideProducts = 1;
-  let numberOfInsideProducts = randomNumber(2,level+1);
+  let numberOfInsideProducts = randomNumber(2,6);
   outsideProduct = [];
   insideProduct = [];
+  if (level > largestMonster-1) {
+    switchMode(0);
+  }
   
   for(let i = 0; i < numberOfOutsideProducts; i++) {
     let numberObject = {
@@ -93,7 +196,6 @@ function loadLevel(lvl){
    }
    displayRadical();
 }
-
 
 function selectNumber(location, index) {
   if (location === 0) {
@@ -142,8 +244,8 @@ function Multiply() {
       number: newProduct,
       selected: false,
       location: 0
-    }
-    if (newProduct > 1) {
+    };
+    if(newProduct > 1) {
       outsideProduct.push(numberObject);
     }
   } else {
@@ -205,7 +307,7 @@ function FactorOut() {
           number: newSquareRoot,
           selected: false,
           location: 0
-        }
+        };
         if (newSquareRoot > 1) {
           outsideProduct.push(numberObject);
          } 
@@ -262,7 +364,7 @@ function Factor() {
       while(newProduct%n === 0) {
         newProduct = newProduct / n;
         factors.push(n);
-      }
+      } 
       n++;
     }
    for(let i = 0; i < factors.length; i++) {
@@ -270,26 +372,49 @@ function Factor() {
           number: factors[i],
           selected: false,
           location: 1
-        }
+        };
         insideProduct.push(numberObject);
      }
-  }
+  } else   if (selectMode === 0) {
+    for(let i = 0; i < outsideProduct.length; i++) {
+      if (outsideProduct[i].selected) {
+        newProduct *= outsideProduct[i].number;
+        objectsToSplice.push(i);
+      }
+    }
+       for(let i = objectsToSplice.length-1; i > -1; i--){
+         outsideProduct.splice(objectsToSplice[i],1);
+       }
+    let n = 2;
+    while (newProduct > 1) {
+      while(newProduct%n === 0) {
+        newProduct = newProduct / n;
+        factors.push(n);
+      } 
+      n++;
+    }
+   for(let i = 0; i < factors.length; i++) {
+        let numberObject = {
+          number: factors[i],
+          selected: false,
+          location: 0
+        };
+        outsideProduct.push(numberObject);
+     }
+  } 
   displayRadical();
 }
 
 function loadLevelSelectScreen() {
   let outputText = "<h2>Select a level<h2>";
   // outputText += '<button onclick="loadLevel(0)">Intro</button> ';
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 12; i++) {
     outputText += ' <button onclick="loadLevel(' + i + ')"> ' + i + ' </button> ';
   }
   levelSelectArea.innerHTML = outputText;
   levelSelectArea.style.display = "block";
   gameArea.style.display = "none";  
 }
-
-
-
 
 function isDivisibleByPower(n,index) {
   let i = 1;
@@ -318,6 +443,12 @@ function Check() {
   if (isDivisibleByPower(numberToCheck,radicalIndex) === true) {
     document.getElementById("textBox").innerHTML = "You are not done yet. Keep going!";
   } else {
+    if (mode === "math") {
+      if (outsideProduct.length > 1 || insideProduct.length > 1) {
+        document.getElementById("textBox").innerHTML = "You are not done yet. Keep going!";
+        return;
+      }
+    }
         level++;
         let outputText = "<h2>Good job!</h2><p>Now try level " + level + "</p>";
         document.getElementById("textBox").innerHTML = outputText;
@@ -325,6 +456,32 @@ function Check() {
     
   }
 }
+
+function switchMode(n) {
+  let buttonText = "";
+  if (n === 1 && level < largestMonster) {
+    mode = "monsters";
+    buttonText += '<button onclick="Multiply()">Combine</button> ';
+    buttonText += '<button onclick="Factor()">Split</button> ';
+    buttonText += '<button onclick="FactorOut()">Kick Out</button> ';
+    buttonText += '<button onclick="Check()">Check</button> ';
+    buttonText += '<button onclick="loadLevelSelectScreen()">Menu</button> ';
+    buttonText += '<button onclick="switchMode(2)">Mode: Monsters</button>';  
+  } else {
+    mode = "math";
+    buttonText += '<button onclick="Multiply()">Multiply</button> ';
+    buttonText += '<button onclick="Factor()">Factor</button> ';
+    buttonText += '<button onclick="FactorOut()">Factor Out</button> ';
+    buttonText += '<button onclick="Check()">Check</button> ';
+    buttonText += '<button onclick="loadLevelSelectScreen()">Menu</button> ';
+    buttonText += '<button onclick="switchMode(1)">Mode: Math</button>';  
+  }
+  document.getElementById('buttons').innerHTML = buttonText;
+  displayRadical();
+}
+
+
+
 
 
 loadLevelSelectScreen();
