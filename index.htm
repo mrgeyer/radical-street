@@ -4,21 +4,25 @@
 </head>
 <body>
 <!-- paste HTML here -- >
+
 <div id="levelSelect"></div>
 <div id="gameArea">
-  <div id="textBox"></div>
+
   <div id="radical"></div>
   <div id="buttons">
 
-     <button onclick="Multiply()">Multiply</button>
-    <button onclick="Factor()">Factor</button>
-    <button onclick="FactorOut()">Factor Out</button>
+     <button onclick="Multiply()">Combine</button>
+    <button onclick="Factor()">Split</button>
+    <button onclick="FactorOut()">Kick Out</button>
     <button onclick="Check()">Check</button>
     <button onclick="loadLevelSelectScreen()">Menu</button>
+    <button onclick="switchMode(1)">Mode: Monsters</button>    
   </div>
+  <div id="textBox"></div>
 </div>
 <div id="StatusBar"></div>
 
+<!-- end pasting -- >
 <script src="scripts/script.js"></script>
 </body>
 </html>
