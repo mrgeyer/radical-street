@@ -60,7 +60,8 @@ function displayRadical() {
   document.getElementById("radical").innerHTML = radicalText;
 }
 
-function loadLevel(level){
+function loadLevel(lvl){
+  level = lvl;
   gameArea.style.display = "block";
   levelSelectArea.style.display = "none";  
   let radicalOutput = "";
@@ -175,6 +176,7 @@ function Multiply() {
 function FactorOut() {
   document.getElementById("textBox").innerHTML = "";
   let newProduct = 1;
+  let newSquareRoot = 1;
   let objectsToSplice = [];
   if (selectMode === 1) {
     for(let i = 0; i < insideProduct.length; i++) {
@@ -183,7 +185,17 @@ function FactorOut() {
         objectsToSplice.push(i);
       }
     }
-    let newSquareRoot = Math.sqrt(newProduct); 
+    switch(radicalIndex) {
+      case 2:
+        newSquareRoot = Math.sqrt(newProduct); 
+        break;
+      case 3:
+        newSquareRoot = Math.cbrt(newProduct); 
+        break;
+       case 4:
+        newSquareRoot = Math.sqrt(Math.sqrt(newProduct)); 
+        break;
+    }
     if(Number.isInteger(newSquareRoot)) {
        for(let i = objectsToSplice.length-1; i > -1; i--){
          insideProduct.splice(objectsToSplice[i],1);
@@ -200,7 +212,19 @@ function FactorOut() {
      } else {
     let errorMessage = "Error! ";
     if (mode === "math") {
-      errorMessage += "Product is not a perfect square. Cannot be factored out.";
+      errorMessage += "Product is not a perfect ";
+      switch(radicalIndex){
+        case 2:
+          errorMessage += "square";
+          break;
+        case 3:
+          errorMessage += "cube";
+          break;
+        case 4:
+          errorMessage += "fourth";
+          break;
+      }
+      errorMessage += ". Cannot be factored out.";
     } else if (mode === "monsters") {
       errorMessage += "Monsters do not match up correctly. Cannot be taken out."; 
     }
@@ -230,8 +254,6 @@ function Factor() {
         objectsToSplice.push(i);
       }
     }
-    
- 
        for(let i = objectsToSplice.length-1; i > -1; i--){
          insideProduct.splice(objectsToSplice[i],1);
        }
@@ -257,7 +279,7 @@ function Factor() {
 
 function loadLevelSelectScreen() {
   let outputText = "<h2>Select a level<h2>";
-  outputText += '<button onclick="loadLevel(0)">Intro</button> ';
+  // outputText += '<button onclick="loadLevel(0)">Intro</button> ';
   for (let i = 1; i < 10; i++) {
     outputText += ' <button onclick="loadLevel(' + i + ')"> ' + i + ' </button> ';
   }
@@ -267,6 +289,43 @@ function loadLevelSelectScreen() {
 }
 
 
-loadLevelSelectScreen();
 
+
+function isDivisibleByPower(n,index) {
+  let i = 1;
+  let iRaised = Math.pow(i,index);
+  while(n >= iRaised) {
+    i++;
+    iRaised = Math.pow(i,index);
+    if (n % iRaised === 0) {
+      return true;
+    }
+
+  }
+  return false;
+}
+
+function productJSON(JSONarray) {
+  let product = 1;
+  for(let i = 0; i < JSONarray.length; i++) {
+    product *= JSONarray[i].number;
+  }
+  return product;
+}
+
+function Check() {
+  let numberToCheck = productJSON(insideProduct);
+  if (isDivisibleByPower(numberToCheck,radicalIndex) === true) {
+    document.getElementById("textBox").innerHTML = "You are not done yet. Keep going!";
+  } else {
+        level++;
+        let outputText = "<h2>Good job!</h2><p>Now try level " + level + "</p>";
+        document.getElementById("textBox").innerHTML = outputText;
+        loadLevel(level);
+    
+  }
+}
+
+
+loadLevelSelectScreen();
 
