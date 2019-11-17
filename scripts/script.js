@@ -10,9 +10,92 @@ selectMode = 0;
 const largestMonster = 12;
 levelSelectArea = document.getElementById("levelSelect");
 gameArea = document.getElementById("gameArea");
+textArea = document.getElementById("textBox");
+buttonArea = document.getElementById("buttons");
+radicalArea = document.getElementById('radical');
+
+monsters = [
+  { number: 0,
+    name: "Rezo",
+    combine: [],
+    primary: false
+  },
+  {
+    number: 1,
+    name: "Juan",
+    combine: [],
+    primary: false
+  },
+    {
+    number: 2,
+    name: "Tootsy",
+    combine: [],
+    primary: true
+  },
+    {
+    number: 3,
+    name: "Seether",
+    combine: [],
+    primary: true
+  },
+   {
+    number: 4,
+    name: "Ford",
+    combine: [[2,2]],
+    primary: false
+  },
+  {
+    number: 5,
+    name: "Vife",
+    combine: [],
+    primary: true
+  },
+  {
+    number: 6,
+    name: "Snix",
+    combine: [[2,3]],
+    primary: false
+  },
+    {
+    number: 7,
+    name: "Sven",
+    combine: [],
+    primary: true
+  },
+  {
+    number: 8,
+    name: "Tate",
+    combine: [[2,2,2],[4,2]],
+    primary: false
+  },
+  {
+    number: 9,
+    name: "Neener",
+    combine: [[3,3]],
+    primary: false
+  },
+  {
+    number: 10,
+    name: "Tne",
+    combine: [[2,5]],
+    primary: false
+  },
+      {
+    number: 11,
+    name: "Elvan",
+    combine: [],
+    primary: true
+  },
+  {
+    number: 12,
+    name: "Welf",
+    combine: [[2,2,3],[2,6],[3,4]],
+    primary: false
+  },
+]
 
 function randomNumber(lowerBound, upperBound){
-  let diff = upperBound - lowerBound;
+  let diff = upperBound - lowerBound + 1;
   let randomNum = lowerBound + Math.floor(diff*Math.random());
   return randomNum;
 }
@@ -102,7 +185,6 @@ function displayRadical() {
         } else {
           // image for productArray[i].number goes here
           outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
-       
           outputText += productArray[i].number;
           outputText += '.png" width="27">';
         }
@@ -152,49 +234,238 @@ function displayRadical() {
         radicalText += '.png" width="64">';
       }
     radicalText += "</td>";
+    if (mode === "monsters") {
+      radicalText += "<td>";
+        radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+        radicalText += houseImageName + 2 + 'c';
+        radicalText += '.png" width="31">';
+      radicalText += "</td>";
+    }
   
     radicalText += "</tr></table>";
     document.getElementById("radical").innerHTML = radicalText;
 }
 
 
-
+function tutorial(tutorialNumber, screenNumber) {
+  let outputText = "";
+  let tutorialStrings2 = [
+    "Hello, my name is Tootsy. I live at 2 Radical Street.",
+    "It does not have a house number, but that is okay. ",
+    "Everyone knows it is 2 Radical Street. It is the only house on the street without a house number. ",
+    "The monsters here on Radical Street like to have parties. ",
+    "When the party is over at my house, I have to kick monsters out two at a time. ",
+    "They also have to be the same type of monster. ",
+    "When they leave, they combine to become one monster! ",
+    "If there is not a monster of the same type, they have to stay in the house. ",
+    "Some monsters can be split into other monsters or be combined to form new monsters. ",
+    "Monsters that cannot be split are called Primary Monsters. ",
+    "Sometimes they can leave on their own if can be split into two of the same type of monster. ",
+    "To kick out monsters, click the monsters you want to kick out and then click kick out. ",
+    "To split monsters, click the monster you want to split and then click Split. ",
+    "To combine monsters, click the monsters you want to combine and click Combine. "
+  ];
+    let tutorialStrings3 = [
+    "Welcome to 3 Radical Street. My name is Vife. ",
+    "At 3 Radical Street, you need 3 monsters of the same type to kick them out of the house. ",
+    "Also, I am a primary monster. Like Tootsy and Seether, I cannont be split anymore. "
+  ];
+      let tutorialStrings4 = [
+    "Welcom to 4 Radical Street. My name is Sven.",
+    "At 4 Radical Street, you need 4 monsters of the same type to kick them out of the house. ",
+    "Also, I am a primary monster. Like Tootsy, Vife, and Seether, I cannont be split anymore. "
+  ];
+  switch (tutorialNumber) {
+    case 2:
+    outputText += '<table><tr><td>';
+      outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+      outputText += 2;
+      outputText += '.png" width="64">';
+    outputText += '</td>';
+    outputText += '<td>';
+      switch (screenNumber) {
+        case 1:
+          for(let i = 0; i < 3; i++) {
+            outputText += tutorialStrings2[i] + '<br>';        
+          }
+          outputText += '<button onclick="tutorial(2,2)">Continue</button>';
+          break;
+         case 2:
+          for(let i = 3; i < 7; i++) {
+            outputText += tutorialStrings2[i] + '<br>';        
+          }
+          outputText += '<button onclick="tutorial(2,3)">Continue</button>';
+          break;
+        case 3:
+          for(let i = 7; i < 11; i++) {
+            outputText += tutorialStrings2[i] + '<br>';        
+          }
+          outputText += '<button onclick="tutorial(2,4)">Continue</button>';
+          break;
+        case 4:
+          for(let i = 11; i < 14; i++) {
+            outputText += tutorialStrings2[i] + '<br>';        
+          }
+          //outputText += '<button onclick="tutorial(2,3)">Continue</button>';
+          break;
+      }
+    outputText += '</td></tr></table>';
+    break; 
+  case 3:
+    outputText += '<table><tr><td>';
+      outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+      outputText += 5;
+      outputText += '.png" width="64">';
+    outputText += '</td>';
+    outputText += '<td>';
+      switch (screenNumber) {
+        case 1:
+          for(let i = 0; i < 3; i++) {
+            outputText += tutorialStrings3[i] + '<br>';        
+          }
+          //outputText += '<button onclick="tutorial(2,2)">Continue</button>';
+          break;
+      }
+    outputText += '</td></tr></table>';
+    break; 
+  case 4:
+    outputText += '<table><tr><td>';
+      outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+      outputText += 7;
+      outputText += '.png" width="64">';
+    outputText += '</td>';
+    outputText += '<td>';
+      switch (screenNumber) {
+        case 1:
+          for(let i = 0; i < 3; i++) {
+            outputText += tutorialStrings4[i] + '<br>';        
+          }
+          //outputText += '<button onclick="tutorial(2,2)">Continue</button>';
+          break;
+      }
+    outputText += '</td></tr></table>';
+    break;  
+  }
+  textArea.innerHTML = outputText;
+  return outputText;
+}
 
 function loadLevel(lvl){
+  let outputText = "";
   level = lvl;
   gameArea.style.display = "block";
   levelSelectArea.style.display = "none";  
   let radicalOutput = "";
   let numberOfOutsideProducts = 1;
-  let numberOfInsideProducts = randomNumber(2,6);
+  let monsterNumber = 2;
+  let numberOfInsideProducts = randomNumber(2,5);
+  let numberObject = {
+    number: 2,
+    selected: false,
+    location: 0
+  };
   outsideProduct = [];
   insideProduct = [];
   if (level > largestMonster-1) {
     switchMode(0);
-  }
-  
-  for(let i = 0; i < numberOfOutsideProducts; i++) {
-    let numberObject = {
-      number: randomNumber(2,level+1),
-      selected: false,
-      location: 0
-    };
-    outsideProduct.push(numberObject);
-  }
-  if(level < 10) {
-    radicalIndex = 2;
-  } else {
     radicalIndex = randomNumber(2,4);
-  }
-   for(let i = 0; i < numberOfInsideProducts; i++) {
-     let numberObject = {
-       number: randomNumber(2, level+1),
-       selected: false,
-       location: 1
-     };
+    
+    for(let i = 0; i < numberOfOutsideProducts; i++) {
+      numberObject = {
+        number: randomNumber(2,level+1),
+        selected: false,
+        location: 0
+      };
+      outsideProduct.push(numberObject);
+    }
+    
+    for(let i = 0; i < numberOfInsideProducts; i++) {
+      numberObject = {
+        number: randomNumber(2, level+1),
+        selected: false,
+        location: 1
+      };
      insideProduct.push(numberObject);
-   }
-   displayRadical();
+   }  
+  } else {
+ 
+    if (mode === 'monsters') {
+        outputText +='<table><tr><td>';
+          outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+          outputText += lvl+1;
+          outputText += '.png" width="64">';
+        outputText += '</td>';
+        outputText += '<td>';
+           outputText += 'Hello, I am ' + monsters[lvl+1].name + ". ";
+           if (monsters[lvl+1].primary) {
+              outputText += "I am a primary monster. I cannot be split anymore.";
+           } else {
+             outputText += "I can be made by combining ";
+             for (let i = 0;  i < monsters[lvl+1].combine.length; i++) {
+               for (let j = 0; j < monsters[lvl+1].combine[i].length; j++) {
+                 monsterNumber = monsters[lvl+1].combine[i][j];
+                 outputText += monsters[monsterNumber].name;
+                 if (j <= monsters[lvl+1].combine[i].length - 2) {
+                   if(monsters[lvl+1].combine[i].length > 2) {
+                     outputText += ",";
+                   }
+                   outputText += " ";
+                 }
+                 if(j === monsters[lvl+1].combine[i].length - 2) {
+                   outputText += "and ";
+                 }
+               }
+               if (monsters[lvl+1].combine.length > 1 && i < monsters[lvl+1].combine.length - 1) {
+                 outputText += " or ";
+               }
+             }
+           }   
+        outputText += '</td></tr></table>';
+    }
+    
+        numberObject = {
+          number: lvl+1,
+          selected: false,
+          location: 0
+        };
+        outsideProduct.push(numberObject);
+        numberObject = {
+          number: lvl+1,
+          selected: false,
+          location: 1
+        };
+        insideProduct.push(numberObject);
+        for(let i = 1; i < numberOfInsideProducts; i++)  {
+          numberObject = {
+            number: randomNumber(2,lvl+1),
+            selected: false,
+            location: 1
+          };
+          insideProduct.push(numberObject);
+        }
+      if (level < 4) {
+        radicalIndex = 2;
+      } else if (level > 4 && level < 6) {
+        radicalIndex = randomNumber(2,3);
+      } else if( level > 6) {
+        radicalIndex = randomNumber(2,4);
+      }
+    }
+    displayRadical();
+    textArea.innerHTML = outputText;
+    if (level === 1) {
+      tutorial(2,1);
+    }
+    if (level === 4) {
+      tutorial(3,1);
+      radicalIndex = 3;
+      displayRadical();
+    }
+    if (level === 6) {
+      tutorial(4,1);
+      radicalIndex = 4;
+      displayRadical();
+    }
 }
 
 function selectNumber(location, index) {
@@ -408,7 +679,14 @@ function Factor() {
 function loadLevelSelectScreen() {
   let outputText = "<h2>Select a level<h2>";
   // outputText += '<button onclick="loadLevel(0)">Intro</button> ';
-  for (let i = 1; i < 12; i++) {
+  let maxLevel = largestMonster-1;
+  if (mode === "math") {
+    if (level > 11){
+     maxLevel = level;     
+    }
+
+  }
+  for (let i = 1; i < maxLevel+1; i++) {
     outputText += ' <button onclick="loadLevel(' + i + ')"> ' + i + ' </button> ';
   }
   levelSelectArea.innerHTML = outputText;
@@ -450,9 +728,9 @@ function Check() {
       }
     }
         level++;
-        let outputText = "<h2>Good job!</h2><p>Now try level " + level + "</p>";
+        let outputText = "<h2>Good job!</h2><p><button onclick='loadLevel("+ level + ")'>Click here to try level " + level + "</button></p>";
         document.getElementById("textBox").innerHTML = outputText;
-        loadLevel(level);
+        //loadLevel(level);
     
   }
 }
@@ -479,10 +757,6 @@ function switchMode(n) {
   document.getElementById('buttons').innerHTML = buttonText;
   displayRadical();
 }
-
-
-
-
 
 loadLevelSelectScreen();
 
