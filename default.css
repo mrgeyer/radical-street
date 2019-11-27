@@ -1,13 +1,49 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
 #radical, .selected, .notSelected {
     font-size: 15px;
     font-family: monospace;
 }
+  
+  .column.outside {
+    width: 30%;
+    align-items: flex-end;
+  }
+  
+  .column.inside {
+    width: 60.6%;
+  }
+  
+  .column.middle {
+    width: 6.5%;
+  }
+  
+  .column.right {
+    width: 2.9%;
+  }
+
+  .column.image.top {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .column.image.bottom {
+    width: 100%;
+    align-items: flex-end;
+  }
+  .column.image.spacer {
+    align-items: flex-end;
+    padding: 5px;
+  }
 
 .selected {
   color: red;
   border: 5px solid red;
   background-color: white;
-  height: 50px;
+  height: 52px;
 }
     
 
@@ -15,7 +51,7 @@
   background-color: white;
   color: black;
   border: 5px solid #EEEEEE;
-  height: 50px;
+  height: 52px;
 }
 
 #gameArea, #buttons, #radical {
