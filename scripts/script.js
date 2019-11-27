@@ -161,7 +161,7 @@ function massMonsterfy() {
 }
 
 function displayRadical() {
-    let radicalText = "<table><tr>";
+    let radicalText = "<div class='flex-container' width=100%>";
     let houseImageName = "radical";
     if (mode === "monsters") {
       houseImageName = "House";
@@ -190,21 +190,22 @@ function displayRadical() {
         }
         outputText += " </button> ";       
   }
+
       return outputText;
     }
-    radicalText += "<td>";
-    radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
-    radicalText += 'outsideSpacer';
-    radicalText += '.png" width="64" height="65">';
+    radicalText += "<div id='outsideHouse'  class='column outside'>";
+      radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+      radicalText += 'outsideSpacer';
+      radicalText += '.png" width="64" height="65">';
   
-    radicalText += displayProducts(outsideProduct);
-    radicalText += "</td>";
+      radicalText += displayProducts(outsideProduct);
+    radicalText += "</div>";
   
-    radicalText += "<td>";
+  radicalText += "<div id='leftSideHouse'  class='column middle'>";
 
   radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
   radicalText += houseImageName + radicalIndex + 'a';
-  radicalText += '.png" width="70"><br>';
+  radicalText += '.png" height="109" class="column image top"><br>';
 /*
   radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
   radicalText += houseImageName + radicalIndex + 'ab';
@@ -214,35 +215,40 @@ function displayRadical() {
   radicalText += houseImageName + 2 + 'ac';
   radicalText += '.png" width="76">';    
   */
-    radicalText += "</td>";
+    radicalText += "</div>";
   
-    radicalText += "<td>";
-    for(let i = 0; i < insideProduct.length; i++) {
+    radicalText += "<div id='insideHouse'  class='column inside'>";
+    //for(let i = 0; i < insideProduct.length; i++) {
         radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
         radicalText += houseImageName + '2ba';
-        radicalText += '.png" width="64">';
-    }
+        radicalText += '.png" height="38" class="column image top">';
+    //}
     radicalText += "<br>";
   
     radicalText += displayProducts(insideProduct);
+    if (insideProduct.length === 0) {
+    radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
+    radicalText += 'outsideSpacer';
+    radicalText += '.png" width="1" height="48">';
+   }
     radicalText += "<br>";
   
 
-      for(let i = 0; i < insideProduct.length; i++) {
+     // for(let i = 0; i < 8; i++) {
         radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
         radicalText += houseImageName + '2bc';
-        radicalText += '.png" width="64">';
-      }
-    radicalText += "</td>";
+        radicalText += '.png" height="8" class="column image bottom">';
+     // }
+    radicalText += "</div>";
     if (mode === "monsters") {
-      radicalText += "<td>";
+      radicalText += "<div id='rightSideHouse' class='column right'>";
         radicalText += '<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
         radicalText += houseImageName + 2 + 'c';
-        radicalText += '.png" width="31">';
-      radicalText += "</td>";
+        radicalText += '.png" height="109" class="column image top">';
+      radicalText += "</div>";
     }
   
-    radicalText += "</tr></table>";
+    radicalText += "</div>";
     document.getElementById("radical").innerHTML = radicalText;
 }
 
@@ -252,7 +258,7 @@ function tutorial(tutorialNumber, screenNumber) {
   let tutorialStrings2 = [
     "Hello, my name is Tootsy. I live at 2 Radical Street.",
     "It does not have a house number, but that is okay. ",
-    "Everyone knows it is 2 Radical Street. It is the only house on the street without a house number. ",
+    "Everyone knows it is 2 Radical Street. <br>It is the only house on the street without a house number. ",
     "The monsters here on Radical Street like to have parties. ",
     "When the party is over at my house, I have to kick monsters out two at a time. ",
     "They also have to be the same type of monster. ",
@@ -266,9 +272,9 @@ function tutorial(tutorialNumber, screenNumber) {
     "To combine monsters, click the monsters you want to combine and click Combine. "
   ];
     let tutorialStrings3 = [
-    "Welcome to 3 Radical Street. My name is Vife. ",
+    "Welcome to 3 Radical Street. My name is Tate. ",
     "At 3 Radical Street, you need 3 monsters of the same type to kick them out of the house. ",
-    "Also, I am a primary monster. Like Tootsy and Seether, I cannont be split anymore. "
+    "I can be made by combining 3 Tootsy or a Tootsy and a Ford. "
   ];
       let tutorialStrings4 = [
     "Welcom to 4 Radical Street. My name is Sven.",
@@ -314,7 +320,7 @@ function tutorial(tutorialNumber, screenNumber) {
   case 3:
     outputText += '<table><tr><td>';
       outputText +='<img src="https://raw.githubusercontent.com/mrgeyer/radical-street/master/images/';
-      outputText += 5;
+      outputText += 8;
       outputText += '.png" width="64">';
     outputText += '</td>';
     outputText += '<td>';
@@ -368,7 +374,7 @@ function loadLevel(lvl){
   insideProduct = [];
   if (level > largestMonster-1) {
     switchMode(0);
-    radicalIndex = randomNumber(2,4);
+    radicalIndex = randomNumber(2,3);
     
     for(let i = 0; i < numberOfOutsideProducts; i++) {
       numberObject = {
@@ -443,29 +449,34 @@ function loadLevel(lvl){
           };
           insideProduct.push(numberObject);
         }
-      if (level < 4) {
+      if (level < 7) {
         radicalIndex = 2;
-      } else if (level > 4 && level < 6) {
+      } else if (level > 6) {
         radicalIndex = randomNumber(2,3);
-      } else if( level > 6) {
+      } 
+      /*
+      else if( level > 6) {
         radicalIndex = randomNumber(2,4);
       }
+      */
     }
     displayRadical();
     textArea.innerHTML = outputText;
     if (level === 1) {
       tutorial(2,1);
     }
-    if (level === 4) {
+    if (level === 7) {
       tutorial(3,1);
       radicalIndex = 3;
       displayRadical();
     }
+    /*
     if (level === 6) {
       tutorial(4,1);
       radicalIndex = 4;
       displayRadical();
     }
+    */
 }
 
 function selectNumber(location, index) {
@@ -727,8 +738,8 @@ function Check() {
         return;
       }
     }
-        level++;
-        let outputText = "<h2>Good job!</h2><p><button onclick='loadLevel("+ level + ")'>Click here to try level " + level + "</button></p>";
+        let nextLevel = level + 1;
+        let outputText = "<h2>Good job!</h2><p><button onclick='loadLevel("+ nextLevel + ")'>Click here to try level " + nextLevel + "</button></p>";
         document.getElementById("textBox").innerHTML = outputText;
         //loadLevel(level);
     
